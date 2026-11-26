@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Миранда — интернет-провайдер | Зареченск РП</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg: #0a0e17;
+    --bg2: #0f1524;
+    --card: #131b2e;
+    --accent: #4f8cff;
+    --accent2: #7c5cff;
+    --text: #e8ecf5;
+    --muted: #8b95ab;
+    --green: #3ddc84;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    overflow-x: hidden;
+  }
+
+  /* ===== Header ===== */
+  header {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 5%;
+    background: rgba(10,14,23,.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255,255,255,.06);
+  }
+  .logo { display: flex; align-items: center; gap: 12px; font-size: 22px; font-weight: 800; letter-spacing: .5px; }
+  .logo span { background: linear-gradient(90deg, var(--accent), var(--accent2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .logo small { display: block; font-size: 10px; font-weight: 500; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; }
+  nav a {
+    color: var(--muted); text-decoration: none; margin-left: 28px;
+    font-size: 15px; transition: color .2s;
+  }
+  nav a:hover { color: var(--text); }
+  .btn {
+    display: inline-block; padding: 12px 28px; border-radius: 12px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    color: #fff; text-decoration: none; font-weight: 600; font-size: 15px;
+    transition: transform .2s, box-shadow .2s; border: none; cursor: pointer;
+  }
+  .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(79,140,255,.35); }
+  .btn-ghost { background: transparent; border: 1px solid rgba(255,255,255,.15); }
+  .btn-ghost:hover { border-color: var(--accent); box-shadow: none; }
+
+  /* ===== Hero ===== */
+  .hero {
+    min-height: 100vh; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; text-align: center;
+    padding: 120px 5% 60px; position: relative;
+    background:
+      radial-gradient(ellipse 60% 45% at 50% 0%, rgba(124,92,255,.18), transparent),
+      radial-gradient(ellipse 45% 35% at 80% 90%, rgba(79,140,255,.12), transparent),
+      var(--bg);
+  }
+  .wifi-icon { width: 90px; height: 90px; margin-bottom: 24px; animation: pulse 2.4s ease-in-out infinite; }
+  @keyframes pulse { 0%,100%{ transform: scale(1); opacity:1;} 50%{ transform: scale(1.07); opacity:.85;} }
+  .badge {
+    display: inline-block; padding: 7px 18px; border-radius: 99px;
+    background: rgba(61,220,132,.12); color: var(--green);
+    font-size: 13px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase;
+    border: 1px solid rgba(61,220,132,.3); margin-bottom: 22px;
+  }
+  .hero h1 { font-size: clamp(36px, 6vw, 68px); line-height: 1.1; margin-bottom: 20px; }
+  .hero h1 span { background: linear-gradient(90deg, var(--accent), var(--accent2), #c86bff); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .hero p { max-width: 620px; color: var(--muted); font-size: 18px; line-height: 1.7; margin-bottom: 36px; }
+  .hero-btns { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
+  .scroll-hint { position: absolute; bottom: 28px; color: var(--muted); font-size: 12px; letter-spacing: 3px; text-transform: uppercase; animation: bounce 2s infinite; }
+  @keyframes bounce { 0%,100%{transform:translateY(0);} 50%{transform:translateY(8px);} }
+
+  /* ===== Sections ===== */
+  section { padding: 90px 5%; max-width: 1200px; margin: 0 auto; }
+  .sec-title { text-align: center; margin-bottom: 14px; font-size: clamp(28px, 4vw, 42px); }
+  .sec-sub { text-align: center; color: var(--muted); max-width: 560px; margin: 0 auto 54px; line-height: 1.7; }
+
+  /* ===== Tariffs ===== */
+  .tariffs { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 24px; }
+  .tariff {
+    background: var(--card); border: 1px solid rgba(255,255,255,.07);
+    border-radius: 20px; padding: 34px 28px; position: relative;
+    transition: transform .25s, border-color .25s, box-shadow .25s;
+  }
+  .tariff:hover { transform: translateY(-6px); border-color: rgba(79,140,255,.4); box-shadow: 0 20px 50px rgba(0,0,0,.4); }
+  .tariff.popular { border-color: var(--accent); }
+  .tag {
+    position: absolute; top: -13px; left: 50%; transform: translateX(-50%);
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    padding: 5px 16px; border-radius: 99px; font-size: 12px; font-weight: 700; letter-spacing: 1px;
+  }
+  .tariff h3 { font-size: 20px; margin-bottom: 6px; }
+  .speed { font-size: 44px; font-weight: 800; margin: 14px 0 4px; background: linear-gradient(90deg, var(--accent), var(--accent2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .speed small { font-size: 16px; -webkit-text-fill-color: var(--muted); }
+  .price { font-size: 20px; margin-bottom: 22px; color: var(--text); }
+  .price span { color: var(--muted); font-size: 14px; }
+  .tariff ul { list-style: none; margin-bottom: 26px; }
+  .tariff li { padding: 8px 0; color: var(--muted); font-size: 15px; display: flex; gap: 10px; align-items: center; }
+  .tariff li::before { content: "✓"; color: var(--green); font-weight: 700; }
+
+  /* ===== Features ===== */
+  .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 22px; }
+  .feature {
+    background: var(--card); border-radius: 18px; padding: 30px 26px;
+    border: 1px solid rgba(255,255,255,.06); transition: transform .2s;
+  }
+  .feature:hover { transform: translateY(-4px); }
+  .feature .ic {
+    width: 52px; height: 52px; border-radius: 14px; display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, rgba(79,140,255,.2), rgba(124,92,255,.2));
+    font-size: 24px; margin-bottom: 18px;
+  }
+  .feature h3 { font-size: 17px; margin-bottom: 10px; }
+  .feature p { color: var(--muted); font-size: 14px; line-height: 1.65; }
+
+  /* ===== Support ===== */
+  .support {
+    background: linear-gradient(135deg, rgba(79,140,255,.12), rgba(124,92,255,.12));
+    border: 1px solid rgba(79,140,255,.25);
+    border-radius: 26px; padding: 60px 8%; text-align: center;
+  }
+  .support h2 { font-size: clamp(26px, 4vw, 38px); margin-bottom: 16px; }
+  .support p { color: var(--muted); max-width: 540px; margin: 0 auto 30px; line-height: 1.7; }
+  .discord-btn {
+    display: inline-flex; align-items: center; gap: 12px;
+    background: #5865F2; color: #fff; text-decoration: none;
+    padding: 16px 36px; border-radius: 14px; font-size: 17px; font-weight: 700;
+    transition: transform .2s, box-shadow .2s;
+  }
+  .discord-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 35px rgba(88,101,242,.45); }
+  .discord-btn svg { width: 26px; height: 26px; fill: #fff; }
+  .support-note { margin-top: 18px; font-size: 13px; color: var(--muted); }
+
+  /* ===== FAQ ===== */
+  .faq-item {
+    background: var(--card); border: 1px solid rgba(255,255,255,.07);
+    border-radius: 14px; margin-bottom: 14px; overflow: hidden;
+  }
+  .faq-q {
+    width: 100%; text-align: left; background: none; border: none; color: var(--text);
+    padding: 20px 24px; font-size: 16px; font-weight: 600; cursor: pointer;
+    display: flex; justify-content: space-between; align-items: center; font-family: inherit;
+  }
+  .faq-q::after { content: "+"; font-size: 22px; color: var(--accent); transition: transform .25s; }
+  .faq-item.open .faq-q::after { transform: rotate(45deg); }
+  .faq-a { max-height: 0; overflow: hidden; transition: max-height .3s ease; }
+  .faq-a p { padding: 0 24px 20px; color: var(--muted); line-height: 1.65; font-size: 15px; }
+
+
+  /* ===== Connect ===== */
+  .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 22px; margin-bottom: 40px; }
+  .step {
+    background: var(--card); border: 1px solid rgba(255,255,255,.07);
+    border-radius: 18px; padding: 30px 26px; position: relative; transition: transform .2s;
+  }
+  .step:hover { transform: translateY(-4px); }
+  .step .num {
+    width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    font-size: 20px; font-weight: 800; margin-bottom: 18px;
+  }
+  .step h3 { font-size: 17px; margin-bottom: 10px; }
+  .step p { color: var(--muted); font-size: 14px; line-height: 1.65; }
+  .connect-info {
+    background: var(--card); border: 1px solid rgba(255,255,255,.07);
+    border-radius: 18px; padding: 30px 28px; margin-bottom: 40px;
+  }
+  .connect-info h3 { font-size: 18px; margin-bottom: 16px; }
+  .connect-info ul { list-style: none; }
+  .connect-info li { padding: 9px 0; color: var(--muted); font-size: 15px; display: flex; gap: 12px; align-items: flex-start; line-height: 1.6; }
+  .connect-info li::before { content: "📌"; flex-shrink: 0; }
+  .connect-info li b { color: var(--text); }
+  .connect-box {
+    background: linear-gradient(135deg, rgba(79,140,255,.12), rgba(124,92,255,.12));
+    border: 1px solid rgba(79,140,255,.25); border-radius: 20px;
+    padding: 40px 6%; text-align: center;
+  }
+  .connect-box h3 { font-size: clamp(20px, 3vw, 28px); margin-bottom: 12px; }
+  .connect-box p { color: var(--muted); max-width: 520px; margin: 0 auto 24px; line-height: 1.7; }
+
+  footer {
+    border-top: 1px solid rgba(255,255,255,.06);
+    padding: 40px 5%; text-align: center; color: var(--muted); font-size: 14px;
+    background: var(--bg2);
+  }
+  footer .logo { justify-content: center; margin-bottom: 12px; font-size: 18px; }
+  footer a { color: var(--accent); text-decoration: none; }
+
+  @media (max-width: 640px) {
+    nav { display: none; }
+    .hero h1 { font-size: 34px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <svg class="wifi-icon" style="width:34px;height:34px;margin:0" viewBox="0 0 24 24" fill="none">
+      <path d="M12 20h.01" stroke="#4f8cff" stroke-width="3" stroke-linecap="round"/>
+      <path d="M8.5 16.4a5 5 0 0 1 7 0" stroke="#4f8cff" stroke-width="2" stroke-linecap="round"/>
+      <path d="M5 12.9a10 10 0 0 1 14 0" stroke="#7c5cff" stroke-width="2" stroke-linecap="round"/>
+      <path d="M1.5 9.3a15 15 0 0 1 21 0" stroke="#4f8cff" stroke-width="2" stroke-linecap="round" opacity=".6"/>
+    </svg>
+    <div>МИРАНДА<small>Зареченск РП</small></div>
+  </div>
+  <nav>
+    <a href="#tariffs">Тарифы</a>
+    <a href="#about">О нас</a>
+    <a href="#faq">FAQ</a>
+    <a href="#connect">Подключить</a>
+    <a href="#support">Поддержка</a>
+  </nav>
+  <a href="#support" class="btn">Подключиться</a>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <svg class="wifi-icon" viewBox="0 0 24 24" fill="none">
+    <circle cx="12" cy="20" r="1.6" fill="#4f8cff"/>
+    <path d="M8.5 16.4a5 5 0 0 1 7 0" stroke="#4f8cff" stroke-width="2" stroke-linecap="round"/>
+    <path d="M5 12.9a10 10 0 0 1 14 0" stroke="#7c5cff" stroke-width="2" stroke-linecap="round"/>
+    <path d="M1.5 9.3a15 15 0 0 1 21 0" stroke="#4f8cff" stroke-width="2" stroke-linecap="round" opacity=".55"/>
+  </svg>
+  <div class="badge">Интернет-провайдер города Зареченск</div>
+  <h1>МИРАНДА — <span>Wi-Fi, который не подводит</span></h1>
+  <p>Крупнейший оператор связи в Зареченске. Быстрый интернет в каждый дом, стабильный сигнал по всему городу и техподдержка, которая всегда на связи.</p>
+  <div class="hero-btns">
+    <a href="#tariffs" class="btn">Выбрать тариф</a>
+    <a href="#support" class="btn btn-ghost">Техподдержка</a>
+  </div>
+  <div class="scroll-hint">▼ листай вниз</div>
+</div>
+
+<!-- TARIFFS -->
+<section id="tariffs">
+  <h2 class="sec-title">Тарифы Миранды</h2>
+  <p class="sec-sub">Честные скорости, без скрытых условий. Выбирай план под свои задачи — от серфинга до стримов.</p>
+  <div class="tariffs">
+    <div class="tariff">
+      <h3>Старт</h3>
+      <div class="speed">100 <small>Мбит/с</small></div>
+      <div class="price">350 ₽ <span>/ месяц</span></div>
+      <ul>
+        <li>Wi-Fi роутер в аренду</li>
+        <li>Подключение за 1 день</li>
+        <li>Поддержка 24/7</li>
+      </ul>
+      <a href="#support" class="btn btn-ghost" style="width:100%;text-align:center">Подключить</a>
+    </div>
+    <div class="tariff popular">
+      <div class="tag">ПОПУЛЯРНЫЙ</div>
+      <h3>Комфорт</h3>
+      <div class="speed">300 <small>Мбит/с</small></div>
+      <div class="price">550 ₽ <span>/ месяц</span></div>
+      <ul>
+        <li>Всё из тарифа «Старт»</li>
+        <li>Роутер Wi-Fi 6 в подарок</li>
+        <li>Статический IP</li>
+        <li>Приоритетная поддержка</li>
+      </ul>
+      <a href="#support" class="btn" style="width:100%;text-align:center">Подключить</a>
+    </div>
+    <div class="tariff">
+      <h3>Ультра</h3>
+      <div class="speed">1 <small>Гбит/с</small></div>
+      <div class="price">900 ₽ <span>/ месяц</span></div>
+      <ul>
+        <li>Всё из тарифа «Комфорт»</li>
+        <li>Мesh-система для большого дома</li>
+        <li>Личный менеджер</li>
+      </ul>
+      <a href="#support" class="btn btn-ghost" style="width:100%;text-align:center">Подключить</a>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT / FEATURES -->
+<section id="about">
+  <h2 class="sec-title">Почему Зареченск выбирает Миранду</h2>
+  <p class="sec-sub">Мы строим сеть, на которую город может положиться — от окраин до центра.</p>
+  <div class="features">
+    <div class="feature">
+      <div class="ic">⚡</div>
+      <h3>Скорость без просадок</h3>
+      <p>Современное оптоволокно по всему Зареченску. Скорость держится даже в вечерний пик.</p>
+    </div>
+    <div class="feature">
+      <div class="ic">🏙️</div>
+      <h3>Покрытие всего города</h3>
+      <p>Работаем в каждом районе Зареченска — от промзоны до частного сектора.</p>
+    </div>
+    <div class="feature">
+      <div class="ic">🛠️</div>
+      <h3>Выезд за 2 часа</h3>
+      <p>Сломался интернет? Наш инженер приедет быстрее, чем остынет чайник.</p>
+    </div>
+    <div class="feature">
+      <div class="ic">💬</div>
+      <h3>Поддержка в Discord</h3>
+      <p>Техподдержка онлайн круглосуточно. Создай тикет — и мы уже решаем проблему.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SUPPORT -->
+<section id="support">
+  <div class="support">
+    <h2>Техподдержка Миранды</h2>
+    <p>Что-то не работает или хочешь подключиться? Заходи в наш Discord-сервер Зареченск РП, создавай тикет в канале поддержки — оператор ответит в течение пары минут.</p>
+    <a class="discord-btn" href="https://discord.gg/BkemWQdQm" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24"><path d="M20.317 4.37a19.79 19.79 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.865-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.058a.082.082 0 0 0 .031.056 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128c.126-.094.252-.192.372-.291a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.3 12.3 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.84 19.84 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+      Перейти в Discord
+    </a>
+    <div class="support-note">discord.gg/BkemWQdQm · поддержка онлайн 24/7</div>
+  </div>
+</section>
+
+
+<!-- CONNECT -->
+<section id="connect">
+  <h2 class="sec-title">Подключить интернет</h2>
+  <p class="sec-sub">Подключение к Миранде занимает один день. Вот как это происходит:</p>
+
+  <div class="steps">
+    <div class="step">
+      <div class="num">1</div>
+      <h3>Зайди в наш Discord</h3>
+      <p>Переходи по ссылке <b>discord.gg/BkemWQdQm</b> и заходи на сервер Зареченск РП.</p>
+    </div>
+    <div class="step">
+      <div class="num">2</div>
+      <h3>Создай заявку</h3>
+      <p>В канале поддержки создай тикет: напиши адрес, желаемый тариф и удобное время визита мастера.</p>
+    </div>
+    <div class="step">
+      <div class="num">3</div>
+      <h3>Мастер подключает</h3>
+      <p>Инженер приезжает в назначенный день, тянет линию, настраивает роутер и проверяет скорость.</p>
+    </div>
+    <div class="step">
+      <div class="num">4</div>
+      <h3>Пользуйся интернетом</h3>
+      <p>Wi-Fi работает сразу после подключения. Платишь только абонентскую плату — подключение бесплатное.</p>
+    </div>
+  </div>
+
+  <div class="connect-info">
+    <h3>Всё, что нужно знать перед подключением</h3>
+    <ul>
+      <li><b>Подключение бесплатное</b> на всех тарифах — платится только ежемесячная абонентская плата.</li>
+      <li><b>Роутер.</b> На тарифах «Старт» и «Ультра» роутер выдаётся в аренду, на «Комфорте» — Wi-Fi 6 роутер в подарок.</li>
+      <li><b>Документы.</b> Для заключения договора достаточно паспорта — мастер оформит всё на месте за 10 минут.</li>
+      <li><b>Сроки.</b> В черте города подключаем за 1 день, в частном секторе — до 3 дней.</li>
+      <li><b>Покрытие.</b> Работаем во всех районах Зареченска. Точную возможность подключения по адресу уточняй в Discord.</li>
+      <li><b>Оплата.</b> Оплата в игре у кассиров Миранды или через поддержку в Discord — как удобно.</li>
+    </ul>
+  </div>
+
+  <div class="connect-box">
+    <h3>Готов подключиться?</h3>
+    <p>Заходи в наш Discord-сервер — там поддержка оформит заявку, ответит на вопросы и назначит день подключения.</p>
+    <a class="discord-btn" href="https://discord.gg/BkemWQdQm" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24"><path d="M20.317 4.37a19.79 19.79 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.865-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.058a.082.082 0 0 0 .031.056 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128c.126-.094.252-.192.372-.291a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.3 12.3 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.84 19.84 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+      Подключиться через Discord
+    </a>
+    <div class="support-note">discord.gg/BkemWQdQm</div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <h2 class="sec-title">Частые вопросы</h2>
+  <p class="sec-sub">Собрали ответы на то, о чём жители Зареченска спрашивают чаще всего.</p>
+  <div class="faq-item">
+    <button class="faq-q">Как подключить интернет Миранды?</button>
+    <div class="faq-a"><p>Напишите в техподдержку через Discord — укажите адрес и желаемый тариф. Мастер приедет в удобный день и подключит всё за час.</p></div>
+  </div>
+  <div class="faq-item">
+    <button class="faq-q">Интернет пропал. Что делать?</button>
+    <div class="faq-a"><p>Перезагрузите роутер (выключите на 30 секунд). Если не помогло — создайте тикет в Discord, оператор проверит линию и при необходимости отправит инженера.</p></div>
+  </div>
+  <div class="faq-item">
+    <button class="faq-q">Сколько стоит подключение?</button>
+    <div class="faq-a"><p>Подключение бесплатное на всех тарифах. Платите только абонентскую плату с первого месяца.</p></div>
+  </div>
+  <div class="faq-item">
+    <button class="faq-q">Как поменять тариф?</button>
+    <div class="faq-a"><p>Напишите в поддержку Discord — сменим тариф в течение дня. Доплата или возврат считается пропорционально остатку месяца.</p></div>
+  </div>
+  <div class="faq-item">
+    <button class="faq-q">Работаете ли за городом?</button>
+    <div class="faq-a"><p>Сейчас покрываем весь Зареченск и ближайшие посёлки. Уточните возможность подключения по вашему адресу в Discord.</p></div>
+  </div>
+</section>
+
+<footer>
+  <div class="logo">
+    <svg class="wifi-icon" style="width:26px;height:26px;margin:0" viewBox="0 0 24 24" fill="none">
+      <path d="M12 20h.01" stroke="#4f8cff" stroke-width="3" stroke-linecap="round"/>
+      <path d="M8.5 16.4a5 5 0 0 1 7 0" stroke="#4f8cff" stroke-width="2" stroke-linecap="round"/>
+      <path d="M5 12.9a10 10 0 0 1 14 0" stroke="#7c5cff" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+    <div>МИРАНДА<small>Зареченск РП</small></div>
+  </div>
+  <p>© 2026 Миранда · Зареченск РП · Выдуманный проект для ролевой игры</p>
+  <p>Техподдержка: <a href="https://discord.gg/BkemWQdQm" target="_blank" rel="noopener">discord.gg/BkemWQdQm</a></p>
+</footer>
+
+<script>
+  document.querySelectorAll('.faq-q').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const item = btn.parentElement;
+      const ans = item.querySelector('.faq-a');
+      const open = item.classList.toggle('open');
+      ans.style.maxHeight = open ? ans.scrollHeight + 'px' : '0';
+    });
+  });
+</script>
+
+</body>
+</html>
